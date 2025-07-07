@@ -42,4 +42,56 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function getAllusers()
+    {
+        $users = User::all();
+        return $users;
+    }
+
+    public function getUserById($id)
+    {
+        $user = User::find($id);
+        return $user;
+    }
+
+    public function createUser($data)
+    {
+        $user = new User();
+        $user->name = $data->name;
+        $user->email = $data->email;
+        $user->password = $data->password; // Ensure password is hashed before saving
+        $user->save();      
+
+        return $user;
+    }
+
+    public function updateUser($id, $data)
+    {
+        $user = User::find($id);
+        if ($user) {
+            $user->name = $data->name;
+            $user->email = $data->email;
+            if (isset($data->password)) {
+                $user->password = $data->password; // Ensure password is hashed before saving
+            }
+            $user->save();
+        }
+        return $user;
+    }
+
+    public function deleteUser($id)
+    {
+        $user = User::find($id);
+        if ($user) {
+            $user->delete();
+            return true;
+        }
+        return false;
+    }
+
+
+
+
+
 }
